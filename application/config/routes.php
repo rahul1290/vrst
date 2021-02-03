@@ -5,7 +5,9 @@ $route['default_controller'] = 'welcome';
 $route['get-allDistributor'] = 'api/Distributor';
 $route['get-allDistributor/(:num)'] = 'api/Distributor/$1';
 
-$route['login'] = 'api/auth/login'; 
+$route['login'] = 'api/auth/login';
+$route['generate-otp'] = 'api/auth/generate_otp_login'; 
+$route['login-otp'] = 'api/auth/login_with_otp';
 $route['registration'] = 'api/auth/register';
 $route['activate'] = 'api/auth/activate_user';
 $route['404_override'] = '';

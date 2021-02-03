@@ -44,13 +44,45 @@ class Auth extends REST_Controller {
                 $result['msg'] = 'Credentials not matched.';
                 $this->response($result,500);
             }
+        }        
+    }
+
+    function generate_otp_login_post(){
+        $this->form_validation->set_rules('contact','Contact no','required|trim|is_natural|exact_length[10]');
+        if($this->form_validation->run() == FALSE){
+            echo validation_errors();
+        } else {
+            $data['contact_no'] = $this->post('contact');
+            $result = $this->Auth_model->generate_otp_login($data);
+            if($result){
+                $userData['contact_no'] = $this->post('contact');
+                $userData['msg'] = 'OTP sent';
+                $this->response($userData,200);
+            } else {
+                $result['msg'] = 'Contact no. not registred with system.';
+                $this->response($result,500);
+            }
         }
+    }
 
-        
-
-
-            
-        
+    function login_with_otp_post(){
+        $this->form_validation->set_rules('contact','Contact no','required|trim|is_natural|exact_length[10]');
+        $this->form_validation->set_rules('otp','OTP','required|trim|is_natural|exact_length[4]');
+        if($this->form_validation->run() == FALSE){
+            echo validation_errors();
+        } else {
+            $data['contact'] = $this->post('contact');
+            $data['otp'] = $this->post('otp');
+            $result = $this->Auth_model->login_with_otp($data);
+            if($result){
+                $jwt['id'] = $result['user_id'];
+                $jwt['email'] = $result['email'];
+                $jwt['time'] = time();
+                $result['token'] = $this->authorization_token->generateToken($jwt);
+                $result['msg'] = 'Login successfully.';
+                $this->response($result,200);
+            }
+        }
     }
     
     function register_post(){

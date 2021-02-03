@@ -29,6 +29,37 @@ class Auth_model extends CI_Model {
         }
     }
 
+    function generate_otp_login($data){
+        $sql = "select * from users where (contact_no = '".$data['contact_no']."' OR alternet_no = '".$data['contact_no']."') and status = 1";
+        $result = $this->db->query($sql)->result_array();
+        if(count($result)>0){
+            $result['otp'] =  $this->my_library->generateNumericOTP();
+            $this->db->where(array('user_id'=> $result[0]['user_id'],'status'=>1));
+            $this->db->update('users',array(
+                    'activation_code' => $result['otp'])
+            );
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function login_with_otp($data) {
+        $sql = "select * from users where (contact_no = '".$data['contact']."' OR alternet_no = '".$data['contact']."') and activation_code = '".$data['otp']."' and status = 1";
+        $result = $this->db->query($sql)->result_array();
+        if(count($result)>0){
+            $sql = "select user_id,user_name,contact_no,email,state_id,lastlogin from users where user_id = '".$result[0]['user_id']."'";
+            $result = $this->db->query($sql)->result_array();
+
+            if(count($result)>0){
+                $this->db->where('user_id',$result[0]['user_id']);
+                $this->db->update('users',array('activation_code'=>null,'lastlogin'=>date('Y-m-d H:i:s')));
+                return $result[0];
+            }
+        }
+        
+    }
+
     function register($data){
         $this->db->insert('users',$data);
         if($this->db->affected_rows() == 1){
