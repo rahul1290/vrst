@@ -4,9 +4,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Auth_model extends CI_Model {
 
     function login($data){
-        // $this->db->select('*');
-        // $result = $this->db->get_where('users',array())->result_array();
-        // return $result;
+        if($data['user_type'] == 'Distributor'){
+
+        }
+        else if($data['user_type'] == 'Retailer'){
+            $this->db->select('*');
+            $this->db->or_where('alternet_no',$data['contact']);
+            $this->db->where('contact_no',$data['contact']);
+            $result = $this->db->get_where('users',array(
+                'password' => $data['password']
+            ))->result_array();
+
+            $sql = "select user_id,user_name,contact_no,email,state_id,lastlogin from users where (contact_no = '".$data['contact']."' or alternet_no = '".$data['contact']."') and password = '".$data['password']."' and status = 1";
+            $result = $this->db->query($sql)->result_array();
+            if(count($result)>0){
+                $this->db->where('user_id',$result[0]['user_id']);
+                $this->db->update('users',array('lastlogin'=>date('Y-m-d H:i:s')));
+                return $result[0];
+            } else {
+                return false;
+            }
+        } else if($data['user_type'] == 'Sales Agent'){
+
+        }
     }
 
     function register($data){

@@ -20,16 +20,37 @@ class Auth extends REST_Controller {
         }
     }
 
-	function login(){  
-        if(!$this->my_library->is_login()){
-            $jwt['id'] = 'a';
-            $jwt['ecode'] = 'sdfasd';
-            $jwt['time'] = time();
-            $jwt['token'] = $this->authorization_token->generateToken($jwt);
-            $this->load->view('auth/login');
-        } else {
-            $this->index();
+	function login_post(){  
+        $this->form_validation->set_rules('contact', 'Contact no', 'required|trim|is_natural|exact_length[10]');
+        $this->form_validation->set_rules('password', 'password', 'trim|min_length[4]');
+        $this->form_validation->set_rules('user_type', 'User Type', 'required');
+        
+        if ($this->form_validation->run() == FALSE){    
+            echo validation_errors();
         }
+        else {
+            $data['contact'] = $this->post('contact');
+            $data['password'] = $this->post('password');
+            $data['user_type'] = $this->post('user_type');
+            $result = $this->Auth_model->login($data);
+            if($result){
+                $jwt['id'] = $result['user_id'];
+                $jwt['email'] = $result['email'];
+                $jwt['time'] = time();
+                $result['token'] = $this->authorization_token->generateToken($jwt);
+                $result['msg'] = 'Login successfully.';
+                $this->response($result,200);
+            } else {
+                $result['msg'] = 'Credentials not matched.';
+                $this->response($result,500);
+            }
+        }
+
+        
+
+
+            
+        
     }
     
     function register_post(){
