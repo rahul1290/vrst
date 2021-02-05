@@ -9,7 +9,7 @@ class Auth extends REST_Controller {
         parent::__construct();
 		$this->load->helper(array('form','url'));
         $this->load->database();
-        $this->load->model(array('Auth_model'));
+        $this->load->model(array('api/Auth_model'));
     }
 
     function index(){
@@ -65,6 +65,29 @@ class Auth extends REST_Controller {
         }
     }
 
+    function otp_after_registration_post(){
+        $this->form_validation->set_rules('contact','Contact no','required|trim|is_natural|exact_length[10]');
+        $this->form_validation->set_rules('otp','OTP','required|trim|is_natural|exact_length[4]');
+        if($this->form_validation->run() == FALSE){
+            echo validation_errors();
+        } else {
+            $data['contact'] = $this->post('contact');
+            $data['otp'] = $this->post('otp');
+            $result = $this->Auth_model->otp_after_registration($data);
+            if($result){
+                $jwt['id'] = $result['user_id'];
+                $jwt['email'] = $result['email'];
+                $jwt['time'] = time();
+                $result['token'] = $this->authorization_token->generateToken($jwt);
+                $result['msg'] = 'Login successfully.';
+                $this->response($result,200);
+            } else {
+                $result['msg'] = 'Wrong OTP';
+                $this->response($result,500);
+            }
+        }
+    }
+
     function login_with_otp_post(){
         $this->form_validation->set_rules('contact','Contact no','required|trim|is_natural|exact_length[10]');
         $this->form_validation->set_rules('otp','OTP','required|trim|is_natural|exact_length[4]');
@@ -109,10 +132,14 @@ class Auth extends REST_Controller {
             $data['created_at'] = date('Y-m-d H:i:s');
             $insertid = $this->Auth_model->register($data);
             if($insertid){
-                if($this->Auth_model->setotp($insertid,$this->my_library->generateNumericOTP())){
+                $otp = $this->my_library->generateNumericOTP();
+                if($this->Auth_model->setotp($insertid,$otp)){
                     $userData['user_id'] = $insertid;
                     $userData['contact_no'] = $data['contact_no'];
                     $userData['msg'] = 'OTP sent to contact no.:'.$data['contact_no'];
+                    //opt send
+                    $this->my_library->sendOTP($data['contact_no'],$otp);
+                    
                     $this->response($userData,200);
                 }
             } else {

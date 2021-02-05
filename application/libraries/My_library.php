@@ -25,6 +25,30 @@ class My_library{
         }
         return $result;
     }
+
+
+    function sendOTP($mobile,$otp){
+            $username = "developerinvnr@gmail.com";
+            $hash = "736397e8c20036f67d304d4d8ee316720a93c9d9d83046cbb453303194086efa";
+            $test = "0";
+            $sender = "RECVNR";
+            
+            $message = "Your Mobile Verification OTP is: $otp";
+            $data = "username=".$username."&hash=".$hash."&message=".$message."&sender=".$sender."&numbers=".$mobile."&test=".$test;
+            $ch = curl_init('http://api.textlocal.in/send/?');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $result = curl_exec($ch);
+           // print_r($result);
+            if(strpos($result,'failure')!==false)
+            {
+                return "failure";
+            }else{
+                return "success";
+            }
+            curl_close($ch);
+    }
     
     
     function number_to_word($amount){

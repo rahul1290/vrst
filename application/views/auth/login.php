@@ -1,78 +1,79 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Log in</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?= base_url('assets/');?>plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="<?= base_url('assets/');?>plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url('assets/');?>dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-</head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b><?= $this->config->item('project_title'); ?></b></a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
-
-      <form action="#" method="post">
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Identity">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <!-- /.col -->
-          <div class="ml-4"> 
-            <button type="submit" class="btn btn-primary">Log In</button>
-          </div>
-          <!-- /.col -->
-          <p class="ml-4 pl-4 mb-1 text-right">
-            <a href="forgot-password.html">I forgot my password</a>
-          </p>
-        </div>
-      </form>
-
-      <!-- /.social-auth-links -->
-
-      
-    </div>
-    <!-- /.login-card-body -->
-  </div>
+<div class="home-btn d-none d-sm-block">
+    <a href="index.html" class="text-dark"><i class="fas fa-home h2"></i></a>
 </div>
-<!-- /.login-box -->
+<div class="account-pages my-5 pt-sm-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card overflow-hidden">
+                    <div class="bg-soft-primary" style="background-color: rgb(22 245 7 / 25%)!important">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="text-primary p-4">
+                                    <h5 class="text-primary">Welcome Back !</h5>
+                                    <p>Sign in to continue to VRST.</p>
+                                </div>
+                            </div>
+                            <div class="col-5 align-self-end">
+                                <!--<img src="assets/images/profile-img.png" alt="" class="img-fluid">-->
+                                <img src="assets/images/logo.png" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0"> 
+                        <div>
+                            <a href="index.html">
+                                <div class="avatar-md profile-user-wid mb-4">
+                                    <span class="avatar-title rounded-circle bg-light">
+                                        <img src="assets/images/vnr-logo.png" alt="" class="rounded-circle" height="34">
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <form class="form-horizontal" method="POST" action="<?= base_url('login');?>">
 
-<!-- jQuery -->
-<script src="<?= base_url('assets/');?>plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="<?= base_url('assets/');?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="<?= base_url('assets/');?>dist/js/adminlte.min.js"></script>
+                                <div class="form-group">
+                                    <label for="username">Identity</label>
+                                    <input type="text" class="form-control" id="identity" name="identity" placeholder="Enter Identity" value="<?php echo set_value('identity'); ?>">
+                                    <?php echo form_error('identity'); ?>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="userpassword">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+                                    <?php echo form_error('password'); ?>
+                                </div>
 
-</body>
-</html>
+                                <div class="form-group">
+                                    <label for="userpassword">User Type</label>
+                                    <select class="form-control" id="usertype" name="usertype">
+                                        <option value="">Select user type</option>
+                                        <option value="distributor" <?php if(set_value('usertype') == 'distributor'){ echo 'selected'; }?>>Distributor</option>
+                                        <option value="sale-agent" <?php if(set_value('usertype') == 'sale-agent'){ echo 'selected'; }?>>Sale Agent</option>
+                                    </select>
+                                    <?php echo form_error('usertype'); ?>
+                                </div>
+         
+                                <div class="pt-2 mt-3">
+                                    <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Log In</button>
+                                </div>
+    
+                                <div class="mt-4 text-center">
+                                    <a href="auth-recoverpw.html" class="text-muted"><i class="mdi mdi-lock mr-1"></i> Forgot your password?</a>
+                                </div>
+                            </form>
+                        </div>
+    
+                    </div>
+                </div>
+                <div class="mt-5 text-center">
+                    <p>Don't have an account ? <a href="auth-register.html" class="font-weight-medium text-primary"> Signup now </a> </p>
+                    <p>© 2020 Skote. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    
