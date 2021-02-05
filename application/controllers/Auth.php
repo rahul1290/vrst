@@ -48,7 +48,11 @@ class Auth extends CI_Controller {
                     $sessionData['user_name'] = $result[0]['DealerName'];
                     $sessionData['user_contact'] = $result[0]['DealerCont'];
                     $sessionData['is_active'] = $result[0]['DealerSts'];
+                    $sessionData['user_type'] = $data['user_type'];
                     $this->session->set_userdata($sessionData);
+                    if($data['user_type'] == 'distributor'){
+                        redirect('Distributor');
+                    }
                 }
             }
         }

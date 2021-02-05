@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'Auth';
 //============WEB=============================//
 $route['login'] = 'Auth/login';
+$route['distributor'] = 'Distributor';
 //============API=============================//
 $route['get-allDistributor'] = 'api/Distributor';
 $route['get-allDistributor/(:num)'] = 'api/Distributor/$1';
