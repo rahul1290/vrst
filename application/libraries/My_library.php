@@ -28,6 +28,7 @@ class My_library{
 
 
     function sendOTP($mobile,$otp){
+    //    return true;
             $username = "developerinvnr@gmail.com";
             $hash = "736397e8c20036f67d304d4d8ee316720a93c9d9d83046cbb453303194086efa";
             $test = "0";

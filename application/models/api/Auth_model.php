@@ -32,6 +32,7 @@ class Auth_model extends CI_Model {
             $this->db->update('users',array(
                     'activation_code' => $result['otp'])
             );
+            $this->my_library->sendOTP($data['contact_no'],$result['otp']);
             return true;
         } else {
             return false;
@@ -50,6 +51,8 @@ class Auth_model extends CI_Model {
                 $this->db->update('users',array('activation_code'=>null,'lastlogin'=>date('Y-m-d H:i:s')));
                 return $result[0];
             }
+        } else {
+            return false;
         }   
     }
 

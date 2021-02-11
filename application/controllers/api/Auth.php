@@ -20,13 +20,13 @@ class Auth extends REST_Controller {
         }
     }
 
-	function login_post(){  
+	function login_post(){
         $this->form_validation->set_rules('contact', 'Contact no', 'required|trim|is_natural|exact_length[10]');
         $this->form_validation->set_rules('password', 'password', 'trim|min_length[4]');
         $this->form_validation->set_rules('user_type', 'User Type', 'required');
         
         if ($this->form_validation->run() == FALSE){    
-            echo validation_errors();
+            $this->response(validation_errors(),500);
         }
         else {
             $data['contact'] = $this->post('contact');
@@ -97,6 +97,7 @@ class Auth extends REST_Controller {
             $data['contact'] = $this->post('contact');
             $data['otp'] = $this->post('otp');
             $result = $this->Auth_model->login_with_otp($data);
+            
             if($result){
                 $jwt['id'] = $result['user_id'];
                 $jwt['email'] = $result['email'];
@@ -104,6 +105,9 @@ class Auth extends REST_Controller {
                 $result['token'] = $this->authorization_token->generateToken($jwt);
                 $result['msg'] = 'Login successfully.';
                 $this->response($result,200);
+            }
+            else {
+                $this->response('',500);
             }
         }
     }
@@ -116,7 +120,7 @@ class Auth extends REST_Controller {
         $this->form_validation->set_rules('aadhar', 'User Aadhar', 'trim|exact_length[12]');
         $this->form_validation->set_rules('email','Email','trim|valid_email');
         $this->form_validation->set_rules('password','Password','trim|min_length[4]');
-        $this->form_validation->set_rules('state_id','State','required|is_natural_no_zero');
+        $this->form_validation->set_rules('state_id','State','required');
         if ($this->form_validation->run() == FALSE){    
             echo validation_errors();
         }

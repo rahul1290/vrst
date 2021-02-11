@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('Asia/Kolkata');
+header("Access-Control-Allow-Origin: *");
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -23,7 +24,7 @@ date_default_timezone_set('Asia/Kolkata');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/vrst/';
+$config['base_url'] = 'http://192.168.43.229/vrst/';
 
 /*
 |--------------------------------------------------------------------------
