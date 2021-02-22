@@ -26,25 +26,19 @@ class Utility_ctrl extends REST_Controller {
         }
     }
     
-    function distributors_get(){
-        $this->db->select('DealerId,DealerName');
-        $result = $this->db->get_where('distributor',array('DealerSts'=>'A'))->result_array();
-        if(count($result)>0){
-            // $temp[0] = array('DealerId'=>'0','DealerName'=>'Select Distributors');
-            // $finalResult = array_merge($temp,$result);
-            $this->response($result,200);
-        } else {
-            $this->response('no record found.',500);
-        }
+    function distributors_get($stateId){
+        $this->db->select('d.DealerId,d.DealerName,mh.HqId,s.state_id,s.state_code,s.state_name');
+		$this->db->join('master_headquater mh','mh.StateId = s.state_id AND mh.status = 1');
+		$this->db->join('distributor d','d.HqId = mh.HqId');
+		$result = $this->db->get_where('state s',array('s.state_code'=>$stateId))->result_array();
+		if(count($result)>0){
+			$this->response($result,200);	
+		}
     }
 
     function crop_get(){
-        $result = array(
-            array('crop_id'=>'0','crop_name'=>'Crop','crop_code'=>'0'),
-            array('crop_id'=>'1','crop_name'=>'chilli','crop_code'=>'chi'),
-            array('crop_id'=>'2','crop_name'=>'potato','crop_code'=>'pot'),
-            array('crop_id'=>'3','crop_name'=>'tomato','crop_code'=>'tom'),
-        );
+        $this->db->select('*');
+		$result = $this->db->get_where('crop',array('status'=>1))->result_array();
 
         if(count($result)>0){
             $this->response($result,200);
@@ -54,12 +48,8 @@ class Utility_ctrl extends REST_Controller {
     }
 
     function crop_variety_get(){
-        $result = array(
-            array('crop_variety_id'=>'0','variety_name'=>'variety','variety_code'=>'0'),
-            array('crop_variety_id'=>'1','variety_name'=>'chilli','variety_code'=>'chi'),
-            array('crop_variety_id'=>'2','variety_name'=>'potato','variety_code'=>'pot'),
-            array('crop_variety_id'=>'3','variety_name'=>'tomato','variety_code'=>'tom'),
-        );
+        $this->db->select('*');
+		$result = $this->db->get_where('crop_variety',array('status'=>1))->result_array();
 
         if(count($result)>0){
             $this->response($result,200);

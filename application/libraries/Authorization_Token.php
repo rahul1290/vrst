@@ -26,7 +26,7 @@ class Authorization_Token
     /**
      * Request Header Name
      */
-    protected $token_header = ['vrstKey'];
+    protected $token_header = ['vrstKey','vrstkey'];
     /**
      * Token Expire Time
      * ----------------------
@@ -70,7 +70,6 @@ class Authorization_Token
          * Request All Headers
          */
         $headers = $this->CI->input->request_headers();
-        
         /**
          * Authorization Header Exists
          */
@@ -204,10 +203,12 @@ class Authorization_Token
      */
     public function tokenIsExist($headers)
     {
-        if(!empty($headers) && is_array($headers)) {
+        if(!empty($headers) && is_array($headers)){
             foreach ($this->token_header as $key) {
-                if (array_key_exists($key, $headers) AND !empty($key))
+				
+                if (array_key_exists($key, $headers) AND !empty($key)){
                     return ['status' => TRUE, 'key' => $key];
+				} 
             }
         }
         return ['status' => FALSE, 'message' => 'Token is not defined.'];

@@ -16,7 +16,7 @@
                             </div>
                             <div class="col-5 align-self-end">
                                 <!--<img src="assets/images/profile-img.png" alt="" class="img-fluid">-->
-                                <img src="assets/images/logo.png" alt="" class="img-fluid">
+                                <img src="<?php echo  base_url(); ?>assets/images/logo.png" alt="" class="img-fluid">
                             </div>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                             <a href="index.html">
                                 <div class="avatar-md profile-user-wid mb-4">
                                     <span class="avatar-title rounded-circle bg-light">
-                                        <img src="assets/images/vnr-logo.png" alt="" class="rounded-circle" height="34">
+                                        <img src="<?php echo  base_url(); ?>assets/images/vnr-logo.png" alt="" class="rounded-circle" height="34">
                                     </span>
                                 </div>
                             </a>
@@ -51,6 +51,7 @@
                                         <option value="">Select user type</option>
                                         <option value="distributor" <?php if(set_value('usertype') == 'distributor'){ echo 'selected'; }?>>Distributor</option>
                                         <option value="sale-agent" <?php if(set_value('usertype') == 'sale-agent'){ echo 'selected'; }?>>Sale Agent</option>
+                                        <option value="admin" <?php if(set_value('usertype') == 'admin'){ echo 'selected'; }?>>Admin</option>
                                     </select>
                                     <?php echo form_error('usertype'); ?>
                                 </div>
@@ -68,8 +69,8 @@
                     </div>
                 </div>
                 <div class="mt-5 text-center">
-                    <p>Don't have an account ? <a href="auth-register.html" class="font-weight-medium text-primary"> Signup now </a> </p>
-                    <p>© 2020 Skote. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                    <p>Don't have an account ? <a href="<?php echo base_url('signup');?>" class="font-weight-medium text-primary"> Signup now </a> </p>
+                    <p>© 2021 <a target="_blank" href="https://www.vnrseeds.com/">VNR</a>
                 </div>
 
             </div>

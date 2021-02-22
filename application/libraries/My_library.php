@@ -10,9 +10,11 @@ class My_library{
     }
 
     function is_login(){
-        if($this->CI->session->userdata('userId') != ''){
+        if($this->CI->session->userdata('user_id')){
+			
             return true;
         } else {
+			
             return false;
         }
     }

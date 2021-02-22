@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Distributor extends CI_Controller {
+class Admin_ctrl extends CI_Controller {
 	
 	function __construct() {
         parent::__construct();
@@ -9,10 +9,10 @@ class Distributor extends CI_Controller {
         $this->load->model(array('Auth_model'));
 		if(!$this->my_library->is_login()){
 			redirect('Auth/login');
-		} else if($this->session->userdata('user_type') != 'distributor'){
+		} else if($this->session->userdata('user_type') != 'admin'){
 		   echo "You are not authorized to see this page.";
 		   die;
-		} 
+		}
     }
 
     function index(){

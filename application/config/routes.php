@@ -3,7 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'Auth';
 //============WEB=============================//
 $route['login'] = 'Auth/login';
+$route['signup'] = 'Auth/signup';
 $route['distributor'] = 'Distributor';
+$route['Admin'] = 'Admin_ctrl';
+$route['Orders'] = 'Order_ctrl';
 //============API=============================//
 $route['get-allDistributor'] = 'api/Distributor';
 $route['get-allDistributor/(:num)'] = 'api/Distributor/$1';
@@ -15,10 +18,13 @@ $route['api/registration'] = 'api/auth/register';
 $route['activate'] = 'api/auth/activate_user';
 
 $route['api/get-states'] = 'api/Utility_ctrl/state';
-$route['api/get-distributors'] = 'api/Utility_ctrl/distributors';
+$route['api/get-distributors/(:any)'] = 'api/Utility_ctrl/distributors/$1';
 $route['api/get-cropList'] = 'api/Utility_ctrl/crop';
 $route['api/get-cropvariety'] = 'api/Utility_ctrl/crop_variety';
 $route['api/get-bill'] = 'api/Utility_ctrl/bill_detail';
 
+$route['api/all-scheme'] = 'api/Scheme_ctrl/all';
+$route['api/all-scheme/(:any)'] = 'api/Scheme_ctrl/all/$1';
+$route['api/scheme-detail/(:num)'] = 'api/Scheme_ctrl/schemeDetail/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
