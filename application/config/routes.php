@@ -20,11 +20,17 @@ $route['activate'] = 'api/auth/activate_user';
 $route['api/get-states'] = 'api/Utility_ctrl/state';
 $route['api/get-distributors/(:any)'] = 'api/Utility_ctrl/distributors/$1';
 $route['api/get-cropList'] = 'api/Utility_ctrl/crop';
-$route['api/get-cropvariety'] = 'api/Utility_ctrl/crop_variety';
+$route['api/get-cropvariety'] = 'api/Utility_ctrl/crop_variety/';
+$route['api/get-cropvariety/(:num)'] = 'api/Utility_ctrl/crop_variety/$1';
 $route['api/get-bill'] = 'api/Utility_ctrl/bill_detail';
 
 $route['api/all-scheme'] = 'api/Scheme_ctrl/all';
 $route['api/all-scheme/(:any)'] = 'api/Scheme_ctrl/all/$1';
 $route['api/scheme-detail/(:num)'] = 'api/Scheme_ctrl/schemeDetail/$1';
+
+$route['api/my-orders-crop'] = 'api/Purchase_ctrl/myPurchasedCrop';
+$route['api/my-orders-cropvariety/(:num)'] = 'api/Purchase_ctrl/myPurchasedCropVariety/$1';
+$route['api/get-distributor/(:num)/(:num)'] = 'api/Purchase_ctrl/get_crop_distributor/$1/$2';
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

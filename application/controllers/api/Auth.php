@@ -174,4 +174,31 @@ class Auth extends REST_Controller {
             }
         }
     }
+	
+	function profile_update_post(){
+		$is_valid_token = $this->authorization_token->validateToken();
+        if(!empty($is_valid_token) && $is_valid_token['status'] === true){
+			
+			$realImage = base64_decode($this->post('image'));
+			file_put_contents('./assets/images/userprofile/'.$is_valid_token['data']->id.'.jpg', $realImage);
+			
+			$this->response(array('msg'=>'hello'),200);
+		} else {
+            $message = ['status' => FALSE,'message' => $is_valid_token['message'] ];
+            $this->response($message, 404);
+        }
+	}
+	
+	function profile_detail_get(){
+		$is_valid_token = $this->authorization_token->validateToken();
+        if(!empty($is_valid_token) && $is_valid_token['status'] === true){
+			
+			$this->db->select('*');
+			$result = $this->db->get_where('users',array('user_id'=>$is_valid_token['data']->id))->result_array();
+			$this->response($result,200);
+		} else {
+            $message = ['status' => FALSE,'message' => $is_valid_token['message'] ];
+            $this->response($message, 404);
+        }
+	}
 }

@@ -24,6 +24,8 @@
                     <th>Sno.</th>
                     <th>State</th>
 					<th>Crop</th>
+					<th>From Date</th>
+					<th>To Date</th>
                     <th>Scheme Title</th>
                     <th>View</th>
                 </tr>
@@ -34,6 +36,8 @@
                             <td><?= $c++; ?></td>
                             <td><?= $scheme['state_name']; ?></td>
 							<td><?= $scheme['CropName']; ?></td>
+							<td><?= date('d/m/Y',strtotime($scheme['from_date']));?></td>
+							<td><?= date('d/m/Y',strtotime($scheme['to_date'])); ?></td>
                             <td><?= $scheme['heading']; ?></td>
                             <td>
                                 <a href="<?php echo base_url('scheme/edit/').$scheme['scheme_id'];?>"<i class="bx bx-pencil"></i>

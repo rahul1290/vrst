@@ -15,32 +15,6 @@ class Order_ctrl extends CI_Controller {
     function index(){
         $data = array();
         $data['orders'] = $this->Order_model->orderList();
-        $data['distributors'] = $this-> Order_model->distributors();
-        $data['sale_executive'] = $this->Order_model->sale_executive();
-        $finalArray = array();
-        foreach($data['orders'] as $order){
-            $temp = $order;
-            $temp['user_type'] = '';
-            if($order['verified_by_role'] == 1){
-                foreach($data['distributors'] as $distributors){
-                    if($distributors['DealerId'] == $order['verified_by']){
-                        $temp['verified_by'] = $distributors['DealerName'];
-                        $temp['user_type'] = 'distributor';
-                        break;
-                    }
-                }
-            } else if($order['verified_by_role'] == 3){
-                foreach($data['sale_executive'] as $sale_executive){
-                    if($sale_executive['EmpId'] == $order['verified_by']){
-                        $temp['verified_by'] = $sale_executive['Fname'].$sale_executive['Lname'];
-                        $temp['user_type'] = 'sale_executive';
-                        break;
-                    }
-                }
-            }
-        $finalArray[] = $temp;
-        }
-        $data['orders'] = $finalArray;
         $data['header'] = $this->load->view('common/header','',true);
         $data['topheader'] = $this->load->view('common/topheader','',true);
         $data['sidebar_nav'] = $this->load->view('common/sidebar_nav','',true);
@@ -74,32 +48,6 @@ class Order_ctrl extends CI_Controller {
 	function history(){
 		$data = array();
         $data['orders'] = $this->Order_model->orderListHistory();
-        $data['distributors'] = $this-> Order_model->distributors();
-        $data['sale_executive'] = $this->Order_model->sale_executive();
-        $finalArray = array();
-        foreach($data['orders'] as $order){
-            $temp = $order;
-            $temp['user_type'] = '';
-            if($order['verified_by_role'] == 1){
-                foreach($data['distributors'] as $distributors){
-                    if($distributors['DealerId'] == $order['verified_by']){
-                        $temp['verified_by'] = $distributors['DealerName'];
-                        $temp['user_type'] = 'distributor';
-                        break;
-                    }
-                }
-            } else if($order['verified_by_role'] == 3){
-                foreach($data['sale_executive'] as $sale_executive){
-                    if($sale_executive['EmpId'] == $order['verified_by']){
-                        $temp['verified_by'] = $sale_executive['Fname'].$sale_executive['Lname'];
-                        $temp['user_type'] = 'sale_executive';
-                        break;
-                    }
-                }
-            }
-        $finalArray[] = $temp;
-        }
-        $data['orders'] = $finalArray;
         $data['header'] = $this->load->view('common/header','',true);
         $data['topheader'] = $this->load->view('common/topheader','',true);
         $data['sidebar_nav'] = $this->load->view('common/sidebar_nav','',true);

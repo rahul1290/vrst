@@ -1,6 +1,5 @@
 <!-- Begin page -->
 <div id="layout-wrapper">
-
     <?php if(isset($topheader)){ print_r($topheader); }?>
     <!-- ========== Left Sidebar Start ========== -->
     <?php if(isset($sidebar_nav)) { print_r($sidebar_nav); }?>
@@ -19,9 +18,9 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title mb-4">Orders List</h4>
+                                        <h4 class="card-title mb-4">Orders History</h4>
                                         <div class="table-responsive">
-                                        	<table class="table table-bordered">
+                                        	<table class="table table-bordered" id="datatable">
                                         		<thead>
                                         			<tr class="bg-dark text-light">
                                         				<th>SNo.</th>

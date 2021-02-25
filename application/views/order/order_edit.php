@@ -76,7 +76,7 @@
 																	<th>SNo.</th>
 																	<th>Crop</th>
 																	<th>Variety</th>
-																	<th>Quantity</th>
+																	<th>Quantity(gm)</th>
 																	<th>Action</th>
 																</tr>
 															</thead>
@@ -140,7 +140,7 @@
 			<?php } ?>
 		<select>
 		
-		<label>Qty</label>
+		<label>Qty(gm)</label>
 		<input type="text" id="addQty" value="" class="form-control">
       </div>
       <div class="modal-footer">

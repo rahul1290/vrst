@@ -83,7 +83,7 @@
                                                         <label for="taskname" class="col-form-label col-lg-2">Headling</label>
                                                         <div class="col-lg-10">
                                                             <input id="heading" name="heading" type="text" class="form-control" placeholder="Heading"
-                                                            value = "<?php if(isset($schemeDetail)){
+                                                            value = "<?php if(isset($schemeDetail) && (count($schemeDetail)>0)){
                                                                             echo $schemeDetail[0]['heading'];
                                                                         } ?>">
                                                         </div>
@@ -92,16 +92,28 @@
                                                         <label for="taskname" class="col-form-label col-lg-2">Sub-Headling</label>
                                                         <div class="col-lg-10">
                                                             <input id="subheading" name="subheading" type="text" class="form-control" placeholder="Sub Heading"
-                                                            value = "<?php if(isset($schemeDetail)){
+                                                            value = "<?php if(isset($schemeDetail) && (count($schemeDetail)>0)){
                                                                             echo $schemeDetail[0]['subheading'];
                                                                     } ?>">
                                                         </div>
                                                     </div>
+                                                    
+                                                	<div class="form-group row ">
+                                                        <label for="taskname" class="col-form-label col-lg-2">Scheme Date</label>
+                                                        <input class="col-4 ml-1 mr-2" name="from_date" id="from_date" type="date" value="<?php if(isset($schemeDetail) && (count($schemeDetail)>0)){
+                                                                            echo date('Y-m-d',strtotime($schemeDetail[0]['from_date']));
+                                                                    } ?>" />
+                                                        <input class="col-4" name="to_date" id="to_date" type="date" value="<?php if(isset($schemeDetail) && (count($schemeDetail)>0)){
+                                                                            echo date('Y-m-d',strtotime($schemeDetail[0]['to_date']));
+                                                                    } ?>" />	
+                                                    </div>
+                                                        
+                                                    
 													<div class="form-group row mb-4">
                                                         <label for="taskname" class="col-form-label col-lg-2">Term & Condition </label>
                                                         <div class="col-lg-10">
                                                             <textarea name="instruction" id="instruction">
-																	<?php if(isset($schemeDetail)){
+																	<?php if(isset($schemeDetail) && (count($schemeDetail)>0)){
                                                                             echo $schemeDetail[0]['instruction'];
                                                                     } ?>
 															</textarea>
@@ -118,9 +130,10 @@
                                                             <div class="row pl-2 pr-3">
                                                             		<?php if($this->session->userdata('user_type') == 'admin'){ ?>
                                                                         <input type="hidden" id="entryId" />
-                                                                        <input type="text" class="qtyText col form-control" placeholder="Enter Quntity" />
-                                                                        <input type="text" class="giftText col form-control" placeholder="Enter Gift" />
-                                                                        <input type="button" class="btn btn-primary addButton" value="Add More"/>
+                                                                        <input type="text" class="fromqtyText col form-control" placeholder="Enter From Quntity" />
+                                                                        <input type="text" class="toqtyText col form-control ml-2" placeholder="Enter to Quntity" />
+                                                                        <input type="text" class="giftText col form-control ml-2" placeholder="Enter Gift" />
+                                                                        <input type="button" class="btn btn-primary addButton ml-2 mb-2" value="Add More"/>
                                                                     <?php } ?>
                                                                     <input type="button" class="btn btn-warning updateButton" style="display:none;" value="Update"/>
                                                             </div>
@@ -129,7 +142,7 @@
                                                                 <thead>
                                                                     <tr class="bg-dark text-light text-center">
                                                                         <th>SNO.</th>
-                                                                        <th>Sold Qty. in Kg</th>
+                                                                        <th>Sold Qty. in gm</th>
                                                                         <th>Gift</th>
                                                                         <?php if($this->session->userdata('user_type') == 'admin'){ ?>
                                                                         <th>Action</th>
@@ -182,13 +195,16 @@
         var entries = <?php if(isset($schemeGiftDetail)){ echo json_encode($schemeGiftDetail); } else { echo '[]'; } ?>;
 		console.log(entries);
         billEnteries();
+        
         $(document).on('click','.addButton',function(){
             var x = {
-                'qty': $('.qtyText').val(),
+                'from_qty': $('.fromqtyText').val(),
+                'to_qty': $('.toqtyText').val(),
                 'gift' : $('.giftText').val()
             }
             entries.push(x);
-            $('.qtyText').val('');
+            $('.fromqtyText').val('');
+            $('.toqtyText').val('');
             $('.giftText').val('');
             console.log(entries);
             billEnteries();
@@ -209,7 +225,8 @@
 
         $(document).on('click','.editEntries',function(){
             const i = $(this).data('index');
-            $('.qtyText').val(entries[i].qty),
+            $('.fromqtyText').val(entries[i].from_qty),
+            $('.toqtyText').val(entries[i].to_qty),
             $('.giftText').val(entries[i].gift),
             $('.addButton').hide();
             $('.updateButton').css('display','block');
@@ -219,10 +236,12 @@
     
         $(document).on('click','.updateButton',function(){
             const i = $('#entryId').val();
-            entries[i]['qty'] = $('.qtyText').val();
+            entries[i]['from_qty'] = $('.fromqtyText').val();
+            entries[i]['to_qty'] = $('.toqtyText').val();
             entries[i]['gift'] = $('.giftText').val();
 
-            $('.qtyText').val('');
+            $('.fromqtyText').val('');
+            $('.toqtyText').val('');
             $('.giftText').val('');
             $('.addButton').css('display','block');
             $('.updateButton').hide();
@@ -235,7 +254,7 @@
 			    $.each(entries,function(key,value){
                     x = x + '<tr>'+
                     '<td>'+ (key + 1) +'</td>'+
-                    '<td>'+ value.qty +'</td>'+
+                    '<td>'+ value.from_qty +'</td>'+
                     '<td>'+ value.gift +'</td>'+
                     '</tr>';
                 });
@@ -243,11 +262,11 @@
                 $.each(entries,function(key,value){
                         x = x + '<tr>'+
                         '<td>'+ (key + 1) +'</td>'+
-                        '<td>'+ value.qty +'</td>'+
+                        '<td>'+ value.from_qty +' - '+ value.to_qty +'</td>'+
                         '<td>'+ value.gift +'</td>'+
                         '<td>'+
-                        '<input data-index="'+ key +'" type="button" class="editEntries" value="Edit"/>'+
-                            '<input data-index="'+ key +'" type="button" class="remove" value="Remove"/>'+
+                        '<a href="javascript:void(0);" data-index="'+ key +'" class="editEntries"><i class="bx bx-pencil"></i></a>'+
+                        '<a href="javascript:void(0);" data-index="'+ key +'" class="remove"><i class="bx bx-trash"></i></a>'+
                         '</td>'+
                     '</tr>';
                 });
@@ -269,6 +288,8 @@
                     'heading' : $('#heading').val(),
                     'subheading' : $('#subheading').val(),
 					'instruction' : CKEDITOR.instances.instruction.getData(),
+					'from_date' : $('#from_date').val(),
+					'to_date' : $('#to_date').val(),
                     'entries' : entries,
                 },
                 dataType : 'json',

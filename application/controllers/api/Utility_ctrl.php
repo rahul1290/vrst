@@ -38,7 +38,7 @@ class Utility_ctrl extends REST_Controller {
 
     function crop_get(){
         $this->db->select('*');
-		$result = $this->db->get_where('crop',array('status'=>1))->result_array();
+		$result['crops'] = $this->db->get_where('crop',array('status'=>1))->result_array();
 
         if(count($result)>0){
             $this->response($result,200);
@@ -47,16 +47,45 @@ class Utility_ctrl extends REST_Controller {
         }
     }
 
-    function crop_variety_get(){
-        $this->db->select('*');
-		$result = $this->db->get_where('crop_variety',array('status'=>1))->result_array();
-
+    function crop_variety_get($cropid = null){
+		if($cropid == null){
+			$this->db->select('*');
+			$result = $this->db->get_where('crop_variety',array('status'=>1))->result_array();
+		} else {
+			$this->db->select('*');
+			$result['varieties'] = $this->db->get_where('crop_variety',array('CropId'=>$cropid,'status'=>1))->result_array();
+		}
         if(count($result)>0){
             $this->response($result,200);
         } else {
             $this->response('No record found.',500);
         }
     }
+    
+    /*
+    function claim_scheme_get(){
+        select sd.*,t2.crop,
+        (case
+            WHEN t2.qty >= from_qty && sd.to_qty = 'AB' then 'claim'
+            WHEN t2.qty >= sd.from_qty && t2.qty > sd.to_qty then 'passed'
+            when t2.qty >= sd.from_qty && t2.qty <= sd.to_qty then 'claim'
+            ELSE 'next to close'
+            end) as status
+            from
+            (select t1.*,s.scheme_id from
+                (SELECT bd.crop,b.created_at,u.state_id,bd.qty,sum(bd.qty)
+                    FROM users u
+                    JOIN bill b on b.created_by = u.user_id
+                    JOIN bill_detail bd on bd.bill_id = b.bill_id
+                    where u.user_id = 15
+                    GROUP by bd.crop
+                    ) as t1
+                JOIN scheme s on s.crop_id = t1.crop and s.state_code = t1.state_id
+                and (t1.created_at between s.from_date AND s.to_date)
+                ) as t2
+                join scheme_detail sd on sd.scheme_id = t2.scheme_id
+    } 
+    */
 
     function bill_detail_get($billId=null){
         $result = array(

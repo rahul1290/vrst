@@ -1,11 +1,17 @@
  <!-- JAVASCRIPT -->
  <script src="<?= base_url();?>assets/libs/jquery/jquery.min.js"></script>
 <script src="<?= base_url();?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<?php if(1 == 2){?>
 <script src="<?= base_url();?>assets/libs/metismenu/metisMenu.min.js"></script>
 <script src="<?= base_url();?>assets/libs/simplebar/simplebar.min.js"></script>
+<script src="<?= base_url();?>assets/js/app.js"></script>
 <script src="<?= base_url();?>assets/libs/node-waves/waves.min.js"></script>
 <script src="<?= base_url();?>assets/libs/apexcharts/apexcharts.min.js"></script>
 <script src="<?= base_url();?>assets/js/pages/tasklist.init.js"></script>
+<?php } ?>
+
+
 
 <script src="<?= base_url();?>assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url();?>assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -26,4 +32,4 @@
 <!-- Datatable init js -->
 <script src="<?= base_url();?>assets/js/pages/datatables.init.js"></script>    
 
-<script src="<?= base_url();?>assets/js/app.js"></script>
+

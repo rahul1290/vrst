@@ -21,12 +21,13 @@
                                     <div class="card-body">
                                         <h4 class="card-title mb-4">New Orders</h4>
                                         <div class="table-responsive">
-                                        	<table class="table table-bordered">
+                                        	<table class="table table-bordered" id="datatable">
                                         		<thead>
                                         			<tr class="bg-dark text-light">
                                         				<th>SNo.</th>
                                         				<th>State</th>
-                                        				<th>OrderBy</th>
+                                        				<th>Retailer Name</th>
+                                        				<th>Distributor Name</th>
 														<th>Bill No.</th>
 														<th>Bill Status</th>
 														<th>Order Date</th>
@@ -42,6 +43,7 @@
                                         			       <td><?php echo $c++; ?></td>
                                         			       <td><?php echo $order['state_name']; ?></td>
                                         			       <td><?php echo $order['user_name']; ?></td>
+                                        			       <td><?php echo $order['DealerName']; ?></td>
 														   <td><?php echo $order['bill_no']; ?></td>
 														   <td><?php echo $order['bill_status']; ?></td>
 														   <td>

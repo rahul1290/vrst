@@ -17,6 +17,8 @@ class Scheme extends CI_Controller {
             $data['heading'] = $this->input->post('heading');
             $data['subheading'] = $this->input->post('subheading');
 			$data['instruction'] = $this->input->post('instruction');
+			$data['from_date'] = $this->input->post('from_date');
+			$data['to_date'] = $this->input->post('to_date');
             $data['created_by'] = $this->session->userdata('user_id');
             $data['created_at'] = date('Y-m-d H:i:s');
             $entries = $this->input->post('entries');
@@ -29,7 +31,8 @@ class Scheme extends CI_Controller {
                 foreach($entries as $entrie){
                     $temp = array();
                     $temp['scheme_id'] = $insertId;
-                    $temp['qty'] = $entrie['qty'];
+                    $temp['from_qty'] = $entrie['from_qty'];
+                    $temp['to_qty'] = $entrie['to_qty'];
                     $temp['gift'] = $entrie['gift'];
                     $schemeDetail[] = $temp;
                 }
@@ -100,7 +103,8 @@ class Scheme extends CI_Controller {
 			foreach($entries as $entrie){
 				$temp = array();
 				$temp['scheme_id'] = $schemeId;
-				$temp['qty'] = $entrie['qty'];
+				$temp['from_qty'] = $entrie['from_qty'];
+				$temp['to_qty'] = $entrie['to_qty'];
 				$temp['gift'] = $entrie['gift'];
 				$schemeDetail[] = $temp;
 			}
@@ -117,6 +121,10 @@ class Scheme extends CI_Controller {
         } else {
             $data = array();
             $data['schemeDetail'] = $this->Scheme_model->schemeList($schemeId);
+            if(empty($data['schemeDetail'])){
+                echo "Scheme not found.";
+                die; 
+            }
             $data['schemeGiftDetail'] = $this->Scheme_model->schemeGiftDetail($schemeId);
             $data['crops'] = $this->Scheme_model->crop_list();
             $data['state'] = json_decode(file_get_contents(base_url().'api/get-states'),true);

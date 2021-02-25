@@ -5,10 +5,11 @@ class Order_model extends CI_Model {
     
     function orderList(){	
 		if($this->session->userdata('user_type') == 'admin'){		
-			$this->db->SELECT('b.bill_id,b.bill_image,b.bill_image,b.bill_status,b.created_at,b.bill_no,b.bill_status,u.user_name,b.verified_by_role,b.verified_by,b.status,ste.state_name');
+			$this->db->SELECT('b.bill_id,b.bill_image,b.created_at,b.bill_no,b.bill_status,d.DealerName,u.user_name,b.verified_by_role,b.verified_by,b.status,ste.state_name');
 			$this->db->from('bill b');
 			$this->db->join('users u','u.user_id = b.created_by and u.status = 1');
 			$this->db->JOIN('state ste','ste.state_code = u.state_id and ste.status = 1');
+			$this->db->JOIN('distributor d','d.DealerId = b.distributor_id');
 			$this->db->WHERE(array('b.transection_type' => 'purchase','b.bill_status'=>'draft','b.status' => 1));
 			$this->db->order_by('b.created_at','desc');
 			$result = $this->db->get()->result_array();
@@ -38,10 +39,18 @@ class Order_model extends CI_Model {
 	
 	function orderListHistory(){
 		if($this->session->userdata('user_type') == 'admin'){
-			$this->db->SELECT('b.bill_id,b.bill_image,b.bill_image,b.bill_status,b.created_at,b.bill_no,b.bill_status,b.verified_at,u.user_name,b.verified_by_role,b.verified_by,b.status,ste.state_name');
+			$this->db->SELECT('b.bill_id,b.bill_image,b.bill_image,b.bill_status,b.created_at,b.bill_no,b.bill_status,b.verified_at,u.user_name,b.verified_by_role,b.verified_by,b.status,ste.state_name,(
+                case 
+             		WHEN b.verified_by_role = 1 THEN d.DealerName
+                	WHEN b.verified_by_role = 3 THEN se.Fname
+                	WHEN b.verified_by_role = 4 THEN "admin"
+                END
+            ) as user_type');
 			$this->db->from('bill b');
 			$this->db->join('users u','u.user_id = b.created_by and u.status = 1');
 			$this->db->JOIN('state ste','ste.state_code = u.state_id and ste.status = 1');
+			$this->db->JOIN('distributor d','d.DealerId = b.verified_by','LEFT');
+			$this->db->JOIN('sale_executive se','se.EmpId = b.verified_by','LEFT');
 			$this->db->WHERE(array('b.transection_type' => 'purchase','b.bill_status'=>'sended','b.status' => 1));
 			$this->db->order_by('b.created_at','desc');
 			$result = $this->db->get()->result_array();
